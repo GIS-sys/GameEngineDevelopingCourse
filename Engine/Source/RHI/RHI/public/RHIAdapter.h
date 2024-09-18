@@ -4,6 +4,7 @@
 #include <Window/IWindow.h>
 #include <Mesh.h>
 #include <Material.h>
+#include <RHI/RHI/Movement.h>
 
 namespace GameEngine
 {
@@ -26,8 +27,9 @@ namespace GameEngine
 
 		public:
 			virtual void Init() = 0;
-			virtual void Update(Mesh::Ptr mesh, Material::Ptr material) = 0;
+			virtual void Update(Mesh::Ptr mesh, Material::Ptr material, Movement movement) = 0;
 			virtual Mesh::Ptr CreateBoxMesh() = 0;
+			virtual Mesh::Ptr CreatePyramidMesh(float dx, float dy, float dz) = 0;
 			virtual Material::Ptr GetMaterial(const std::string& name) = 0;
 			virtual void ExecuteCommandLists() = 0;
 			virtual void Flush() = 0;

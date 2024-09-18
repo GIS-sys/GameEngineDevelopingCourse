@@ -22,9 +22,46 @@ namespace GameEngine
 			m_d3d12Private->Init();
 		}
 
-		void D3D12RHI::Update(Mesh::Ptr mesh, Material::Ptr material)
+		void D3D12RHI::Update(Mesh::Ptr mesh, Material::Ptr material, Movement movement)
 		{
-			m_d3d12Private->Update(mesh, material);
+			m_d3d12Private->Update(mesh, material, movement);
+		}
+
+		Mesh::Ptr D3D12RHI::CreatePyramidMesh(float dx, float dy, float dz)
+		{
+			array<Vertex, 8> vertices =
+			{
+				Vertex({ Math::Vector3f(dx - 1.0f, dy - 1.0f, dz - 1.0f), Math::Vector4f((float*)&DirectX::Colors::White) }),
+				Vertex({ Math::Vector3f(dx - 1.0f, dy + 1.0f, dz - 1.0f), Math::Vector4f((float*)&DirectX::Colors::Black) }),
+				Vertex({ Math::Vector3f(dx + 1.0f, dy + 1.0f, dz - 1.0f), Math::Vector4f((float*)&DirectX::Colors::Red) }),
+				Vertex({ Math::Vector3f(dx + 1.0f, dy - 1.0f, dz - 1.0f), Math::Vector4f((float*)&DirectX::Colors::Green) }),
+				Vertex({ Math::Vector3f(dx + 0.0f, dy + 0.0f, dz + 1.0f), Math::Vector4f((float*)&DirectX::Colors::Blue) })
+			};
+
+			array<uint16_t, 36> indices =
+			{
+				// front face
+				//0, 1, 4,
+				0, 4, 1,
+
+				// back face
+				//1, 2, 4,
+				1, 4, 2,
+
+				// left face
+				//2, 3, 4,
+				2, 4, 3,
+
+				// right face
+				//3, 0, 4,
+				3, 4, 0,
+
+				// bottom face
+				0, 1, 2,
+				0, 2, 3
+			};
+
+			return m_d3d12Private->CreateMesh(vertices.begin(), vertices.size(), sizeof(Vertex), indices.begin(), indices.size(), sizeof(uint16_t));
 		}
 
 		Mesh::Ptr D3D12RHI::CreateBoxMesh()

@@ -18,6 +18,7 @@
 #include <Mesh.h>
 #include <Material.h>
 #include <D3D12UploadBuffer.h>
+#include <RHI/RHI/Movement.h>
 
 namespace GameEngine
 {
@@ -42,7 +43,7 @@ namespace GameEngine
 			
 			Material::Ptr GetMaterial(const std::string& name);
 
-			void Update(Mesh::Ptr mesh, Material::Ptr material);
+			void Update(Mesh::Ptr mesh, Material::Ptr material, Movement movement);
 			void ExecuteCommandLists();
 			void FlushCommandQueue();
 			void OnResize();

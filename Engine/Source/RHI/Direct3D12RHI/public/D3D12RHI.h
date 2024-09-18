@@ -20,8 +20,9 @@ namespace GameEngine
 
 		public:
 			virtual void Init() override;
-			virtual void Update(Mesh::Ptr mesh, Material::Ptr material) override;
+			virtual void Update(Mesh::Ptr mesh, Material::Ptr material, Movement movement) override;
 			virtual Mesh::Ptr CreateBoxMesh() override;
+			virtual Mesh::Ptr CreatePyramidMesh(float dx, float dy, float dz) override;
 			virtual Material::Ptr GetMaterial(const std::string& name) override;
 			virtual void ExecuteCommandLists() override;
 			virtual void Flush() override;

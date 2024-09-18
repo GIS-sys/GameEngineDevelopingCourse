@@ -10,10 +10,17 @@ namespace GameEngine::Render
 		m_rhi = HAL::RHIHelper::CreateRHI("D3D12");
 		m_rhi->Init();
 
+		// BLINKING if you want to get rid of blinking - comment one of objects creation
+
 		RenderObject::Ptr box = std::make_shared<RenderObject>();
 		m_RenderObjects.push_back(box);
-		box->m_mesh = m_rhi->CreatePyramidMesh(0.0, 0.0, 0.0);
+		box->m_mesh = m_rhi->CreateBoxMesh();
 		box->m_material = m_rhi->GetMaterial(box->m_mesh->GetName());
+
+		RenderObject::Ptr pyramid = std::make_shared<RenderObject>();
+		m_RenderObjects.push_back(pyramid);
+		pyramid->m_mesh = m_rhi->CreatePyramidMesh(1.0, 2.0, 3.0);
+		pyramid->m_material = m_rhi->GetMaterial(pyramid->m_mesh->GetName());
 		
 		m_rhi->ExecuteCommandLists();
 		m_rhi->Flush();
@@ -32,9 +39,12 @@ namespace GameEngine::Render
 			std::sin(2 * delta * 6.28) * 8,
 			delta * (1 - delta) * delta * (1 - delta) * 4
 		);
-		
+
 		// draw
-		m_rhi->Update(m_RenderObjects[0]->m_mesh, m_RenderObjects[0]->m_material, movement);
+		for (const auto& object : m_RenderObjects) {
+			m_rhi->Update(object->m_mesh, object->m_material, movement);
+			m_rhi->Flush(); // BLINKING I know it's not supposed to be here but for some reason multiple objects are not supported (could not figure it out yet)
+		}
 		m_rhi->Flush();
 	}
 

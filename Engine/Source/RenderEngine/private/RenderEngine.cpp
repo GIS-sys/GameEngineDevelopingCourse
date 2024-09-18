@@ -25,19 +25,16 @@ namespace GameEngine::Render
 		long mss = std::chrono::duration_cast<std::chrono::milliseconds>(
 			std::chrono::system_clock::now().time_since_epoch()
 		).count();
-		float delta = (mss % 1000) / 1000.0;
-		//float dy = dx, dz = dx;
-		/*m_RenderObjects[0]->m_mesh = m_rhi->CreatePyramidMesh(dx, dy, dz);
-		m_RenderObjects[0]->m_material = m_rhi->GetMaterial(m_RenderObjects[0]->m_mesh->GetName());*/
-		/*m_RenderObjects.pop_back();
-		RenderObject::Ptr box = std::make_shared<RenderObject>();
-		m_RenderObjects.push_back(box);
-		box->m_mesh = m_rhi->CreatePyramidMesh(0.0, 0.0, 0.0);
-		box->m_material = m_rhi->GetMaterial(box->m_mesh->GetName());*/
-		//m_RenderObjects[0]->m_mesh->move(dx, dy, dz);
+		float delta = (mss % 5000) / 5000.0;
+		Movement movement(
+			std::sin(delta * 6.28) * 16,
+			std::cos(delta * 6.28) * 8,
+			std::sin(2 * delta * 6.28) * 8,
+			delta * (1 - delta) * delta * (1 - delta) * 4
+		);
 		
 		// draw
-		m_rhi->Update(m_RenderObjects[0]->m_mesh, m_RenderObjects[0]->m_material, HAL::Movement(std::sin(delta), std::cos(delta), delta, -delta));
+		m_rhi->Update(m_RenderObjects[0]->m_mesh, m_RenderObjects[0]->m_material, movement);
 		m_rhi->Flush();
 	}
 

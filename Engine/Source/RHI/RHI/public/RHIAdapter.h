@@ -3,6 +3,7 @@
 #include <RHI/RHI/export.h>
 #include <Window/IWindow.h>
 #include <Mesh.h>
+#include <Material.h>
 #include <RHI/RHI/Movement.h>
 
 namespace GameEngine

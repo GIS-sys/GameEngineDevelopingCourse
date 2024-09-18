@@ -18,6 +18,8 @@ namespace GameEngine::Render
 			{
 				return m_name;
 			}
+
+			virtual void move(float dx, float dy, float dz) = 0;
 		};
 	}
 }

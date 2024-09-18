@@ -27,7 +27,7 @@ namespace GameEngine
 			m_d3d12Private->Update(mesh, material);
 		}
 
-		Mesh::Ptr D3D12RHI::CreateBoxMesh()
+		Mesh::Ptr D3D12RHI::CreatePyramidMesh(float dx, float dy, float dz)
 		{
 			array<Vertex, 8> vertices =
 			{
@@ -55,6 +55,50 @@ namespace GameEngine
 				// bottom face
 				0, 1, 2,
 				0, 2, 3
+			};
+
+			return m_d3d12Private->CreateMesh(vertices.begin(), vertices.size(), sizeof(Vertex), indices.begin(), indices.size(), sizeof(uint16_t));
+		}
+
+		Mesh::Ptr D3D12RHI::CreateBoxMesh()
+		{
+			array<Vertex, 8> vertices =
+			{
+				Vertex({ Math::Vector3f(-1.0f, -1.0f, -1.0f), Math::Vector4f((float*)&DirectX::Colors::White) }),
+				Vertex({ Math::Vector3f(-1.0f, +1.0f, -1.0f), Math::Vector4f((float*)&DirectX::Colors::Black) }),
+				Vertex({ Math::Vector3f(+1.0f, +1.0f, -1.0f), Math::Vector4f((float*)&DirectX::Colors::Red) }),
+				Vertex({ Math::Vector3f(+1.0f, -1.0f, -1.0f), Math::Vector4f((float*)&DirectX::Colors::Green) }),
+				Vertex({ Math::Vector3f(-1.0f, -1.0f, +1.0f), Math::Vector4f((float*)&DirectX::Colors::Blue) }),
+				Vertex({ Math::Vector3f(-1.0f, +1.0f, +1.0f), Math::Vector4f((float*)&DirectX::Colors::Yellow) }),
+				Vertex({ Math::Vector3f(+1.0f, +1.0f, +1.0f), Math::Vector4f((float*)&DirectX::Colors::Cyan) }),
+				Vertex({ Math::Vector3f(+1.0f, -1.0f, +1.0f), Math::Vector4f((float*)&DirectX::Colors::Magenta) })
+			};
+
+			array<uint16_t, 36> indices =
+			{
+				// front face
+				0, 1, 2,
+				0, 2, 3,
+
+				// back face
+				4, 6, 5,
+				4, 7, 6,
+
+				// left face
+				4, 5, 1,
+				4, 1, 0,
+
+				// right face
+				3, 2, 6,
+				3, 6, 7,
+
+				// top face
+				1, 5, 6,
+				1, 6, 2,
+
+				// bottom face
+				4, 0, 3,
+				4, 3, 7
 			};
 
 			return m_d3d12Private->CreateMesh(vertices.begin(), vertices.size(), sizeof(Vertex), indices.begin(), indices.size(), sizeof(uint16_t));

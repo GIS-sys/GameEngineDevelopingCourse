@@ -65,8 +65,6 @@ namespace GameEngine
 				m_indexBufferUploader = nullptr;
 			}
 
-			void move(float dx, float dy, float dz) override;
-
 			uint32_t GetIndexCount() const { return m_indexCount; }
 
 		private:

@@ -22,9 +22,9 @@ namespace GameEngine
 			m_d3d12Private->Init();
 		}
 
-		void D3D12RHI::Update(Mesh::Ptr mesh, Material::Ptr material)
+		void D3D12RHI::Update(Mesh::Ptr mesh, Material::Ptr material, Movement movement)
 		{
-			m_d3d12Private->Update(mesh, material);
+			m_d3d12Private->Update(mesh, material, movement);
 		}
 
 		Mesh::Ptr D3D12RHI::CreatePyramidMesh(float dx, float dy, float dz)

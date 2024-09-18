@@ -46,13 +46,5 @@ namespace GameEngine
 			m_startIndexLocation = 0;
 			m_baseVertexLocation = 0;
 		}
-
-		void D3D12Mesh::move(float dx, float dy, float dz) {
-			for (int i = 0; i < m_vertexBufferCPU->GetBufferSize(); i += 3) {
-				*((float*)(m_vertexBufferCPU->GetBufferPointer()) + i) += dx;
-				*((float*)(m_vertexBufferCPU->GetBufferPointer()) + i + 1) += dy;
-				*((float*)(m_vertexBufferCPU->GetBufferPointer()) + i + 2) += dz;
-			}
-		}
 	}
 }

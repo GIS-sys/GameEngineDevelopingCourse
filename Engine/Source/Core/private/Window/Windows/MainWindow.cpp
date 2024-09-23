@@ -12,13 +12,6 @@
 
 namespace GameEngine::Core
 {
-	struct TMP {
-		long long operator()(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-			return 0ll;
-		}
-	};
-	
-
 	Window* g_MainWindowsApplication = nullptr;
 
 	LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -35,12 +28,11 @@ namespace GameEngine::Core
 		case WM_MBUTTONDOWN:
 			g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::A] = KeyboardButtonState::PRESSED; // TODO proper key detection
 		case WM_RBUTTONDOWN:
-			//OnKeyboardButton(wParam, KeyboardButtonId::A, KeyboardButtonState::PRESSED);
 			OnMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), g_MainWindowsApplication);
 			return 0;
 		case WM_LBUTTONUP:
 		case WM_MBUTTONUP:
-			g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::A] = KeyboardButtonState::NOT_PRESSED; // TODO
+			g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::A] = KeyboardButtonState::NOT_PRESSED; // TODO proper key detection
 		case WM_RBUTTONUP:
 			OnMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
@@ -62,12 +54,7 @@ namespace GameEngine::Core
 		WNDCLASSEX wc;
 		wc.cbSize = sizeof(WNDCLASSEX);
 		wc.style = CS_HREDRAW | CS_VREDRAW;
-		/*wc.lpfnWndProc = [keyboard_buttons = this->keyboard_buttons](HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-			return WindowProc(hwnd, msg, wParam, lParam, keyboard_buttons);
-		};*/
-		//wc.lpfnWndProc = [](HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) { return DefWindowProc(hwnd, msg, wParam, lParam);  };
 		wc.lpfnWndProc = WindowProc;
-		//wc.lpfnWndProc = TMP();
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = hInstance;

@@ -44,11 +44,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #endif
 
 	GameEngine::KeyboardButtons* keyboard_buttons = new GameEngine::KeyboardButtons();
+
 	GameEngine::Core::g_MainWindowsApplication = new GameEngine::Core::Window();
 	GameEngine::Core::g_MainWindowsApplication->Init(hInstance, keyboard_buttons);
 
 	std::unique_ptr<GameEngine::Game> game = std::make_unique<GameEngine::Game>(&WindowsMessageLoop, keyboard_buttons);
-
 	game->Run();
 
 	return 0;

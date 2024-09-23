@@ -46,6 +46,12 @@ namespace GameEngine::Core
 			case 0x44:
 				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::D] = KeyboardButtonState::PRESSED;
 				return 0;
+			case 0x45:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::E] = KeyboardButtonState::PRESSED;
+				return 0;
+			case 0x51:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::Q] = KeyboardButtonState::PRESSED;
+				return 0;
 			case 0x53:
 				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::S] = KeyboardButtonState::PRESSED;
 				return 0;
@@ -61,6 +67,12 @@ namespace GameEngine::Core
 				return 0;
 			case 0x44:
 				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::D] = KeyboardButtonState::NOT_PRESSED;
+				return 0;
+			case 0x45:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::E] = KeyboardButtonState::NOT_PRESSED;
+				return 0;
+			case 0x51:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::Q] = KeyboardButtonState::NOT_PRESSED;
 				return 0;
 			case 0x53:
 				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::S] = KeyboardButtonState::NOT_PRESSED;

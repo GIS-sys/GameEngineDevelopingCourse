@@ -64,9 +64,9 @@ namespace GameEngine
 			else if (i == 1)
 			{
 				Math::Vector3f speed(
-					(keyboard_bindings.get_forward() ? 1.0 : 0.0) + (keyboard_bindings.get_backward() ? -1.0 : 0.0),
-					(keyboard_bindings.get_left() ? 1.0 : 0.0) + (keyboard_bindings.get_right() ? -1.0 : 0.0),
-					0.0
+					(keyboard_bindings.get_right() ? 1.0 : 0.0) + (keyboard_bindings.get_left() ? -1.0 : 0.0),
+					(keyboard_bindings.get_up() ? 1.0 : 0.0) + (keyboard_bindings.get_down() ? -1.0 : 0.0),
+					(keyboard_bindings.get_forward() ? 1.0 : 0.0) + (keyboard_bindings.get_backward() ? -1.0 : 0.0)
 				); // TODO proper directions after test
 				pos = pos + speed.Normalized() * dt;
 			}

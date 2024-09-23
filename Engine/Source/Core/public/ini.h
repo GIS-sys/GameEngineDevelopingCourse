@@ -26,6 +26,8 @@ http://code.google.com/p/inih/
 
 
 #include <stdio.h>
+#include <iostream>
+#include <direct.h>
 
 
 /* Nonzero to allow multi-line value parsing, in the style of Python's
@@ -113,8 +115,7 @@ namespace GameEngine::Core
        close the file when it's finished -- the caller must do that. */
        /* See documentation in header file. */
     inline int ini_parse_file(FILE* file,
-        int (*handler)(void* user, const char* section,
-            const char* name, const char* value),
+        std::function<int(void*, const char*, const char*, const char*)> handler,
         void* user)
     {
         /* Uses a fair bit of stack (use heap instead if you need to) */
@@ -219,8 +220,7 @@ namespace GameEngine::Core
 
 
     inline int ini_parse(const char* filename,
-        int (*handler)(void* user, const char* section,
-            const char* name, const char* value),
+        std::function<int(void*, const char*, const char*, const char*)> handler,
         void* user)
     {
         FILE* file;

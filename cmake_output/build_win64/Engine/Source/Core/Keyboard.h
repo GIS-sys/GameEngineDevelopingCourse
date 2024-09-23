@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <Core/ini.h>
 
 
 namespace GameEngine
@@ -39,6 +40,7 @@ namespace GameEngine
 		void load_ini() {
 			forward.push_back(KeyboardButtonId::A);
 			// TODO proper ini load
+			ini_parse("qwe", [](void* user, const char* section, const char* name, const char* value) { return 0;  }, nullptr);
 			initialized = true;
 		}
 

@@ -82,7 +82,7 @@ namespace GameEngine
 				}
 				return 0;
 			};
-			GameEngine::Core::ini_parse("keybindings.ini", callback, nullptr); // TODO find ini
+			GameEngine::Core::ini_parse("keybindings.ini", callback, nullptr); // This file must be in cmake_output\build_win64\Engine\Source\Game\ folder
 			initialized = true;
 		}
 

@@ -8,6 +8,7 @@
 #include <WindowEventsCallbacks.h>
 #include <Window/IWindow.h>
 
+#include <iostream>
 #include <Core/Keyboard.h>
 
 namespace GameEngine::Core
@@ -26,18 +27,48 @@ namespace GameEngine::Core
 			g_MainWindowsApplication->Resize(LOWORD(lParam), HIWORD(lParam));
 		case WM_LBUTTONDOWN:
 		case WM_MBUTTONDOWN:
-			g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::A] = KeyboardButtonState::PRESSED; // TODO proper key detection
 		case WM_RBUTTONDOWN:
 			OnMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), g_MainWindowsApplication);
 			return 0;
 		case WM_LBUTTONUP:
 		case WM_MBUTTONUP:
-			g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::A] = KeyboardButtonState::NOT_PRESSED; // TODO proper key detection
 		case WM_RBUTTONUP:
 			OnMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
 		case WM_MOUSEMOVE:
 			OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), g_MainCamera, g_MainWindowsApplication);
+			return 0;
+		case WM_KEYDOWN:
+			switch (wParam) {
+			case 0x41:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::A] = KeyboardButtonState::PRESSED;
+				return 0;
+			case 0x44:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::D] = KeyboardButtonState::PRESSED;
+				return 0;
+			case 0x53:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::S] = KeyboardButtonState::PRESSED;
+				return 0;
+			case 0x57:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::W] = KeyboardButtonState::PRESSED;
+				return 0;
+			}
+			return 0;
+		case WM_KEYUP:
+			switch (wParam) {
+			case 0x41:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::A] = KeyboardButtonState::NOT_PRESSED;
+				return 0;
+			case 0x44:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::D] = KeyboardButtonState::NOT_PRESSED;
+				return 0;
+			case 0x53:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::S] = KeyboardButtonState::NOT_PRESSED;
+				return 0;
+			case 0x57:
+				g_MainWindowsApplication->keyboard_buttons->button_states[KeyboardButtonId::W] = KeyboardButtonState::NOT_PRESSED;
+				return 0;
+			}
 			return 0;
 		}
 		return DefWindowProc(hwnd, msg, wParam, lParam);

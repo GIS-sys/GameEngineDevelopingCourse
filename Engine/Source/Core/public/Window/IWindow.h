@@ -3,6 +3,8 @@
 #include <Core/export.h>
 #include <Vector.h>
 
+#include <Core/Keyboard.h>
+
 namespace GameEngine::Core
 {
 	class CORE_API Window final
@@ -10,7 +12,7 @@ namespace GameEngine::Core
 	public:
 		Window() = default;
 
-		void Init(void* instance);
+		void Init(void* instance, KeyboardButtons* keyboard_buttons);
 
 		void* GetWindowHandle() const { return m_WndHndl; }
 
@@ -20,6 +22,8 @@ namespace GameEngine::Core
 		float GetAspectRatio() const { return (float)m_Width / (float)m_Height; }
 		Math::Vector2i GetMousePos() const { return m_MousePos; }
 		void SetMousePos(int x, int y) { m_MousePos.x = x; m_MousePos.y = y; }
+
+		KeyboardButtons* keyboard_buttons;
 
 	private:
 		uint32_t m_Width = 800;

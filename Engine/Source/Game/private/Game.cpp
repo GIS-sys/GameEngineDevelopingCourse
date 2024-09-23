@@ -8,9 +8,11 @@
 namespace GameEngine
 {
 	Game::Game(
-		std::function<bool()> PlatformLoopFunc
+		std::function<bool()> PlatformLoopFunc,
+		KeyboardButtons* keyboard_buttons
 	) :
-		PlatformLoop(PlatformLoopFunc)
+		PlatformLoop(PlatformLoopFunc),
+		keyboard_bindings(keyboard_buttons)
 	{
 		Core::g_MainCamera = new Core::Camera();
 		Core::g_MainCamera->SetPosition(Math::Vector3f(0.0f, 6.0f, -6.0f));
@@ -62,8 +64,8 @@ namespace GameEngine
 			else if (i == 1)
 			{
 				Math::Vector3f speed(
-					(KeyboardBindings::get_forward() ? 1.0 : 0.0) + (KeyboardBindings::get_backward() ? -1.0 : 0.0),
-					(KeyboardBindings::get_left() ? 1.0 : 0.0) + (KeyboardBindings::get_right() ? -1.0 : 0.0),
+					(keyboard_bindings.get_forward() ? 1.0 : 0.0) + (keyboard_bindings.get_backward() ? -1.0 : 0.0),
+					(keyboard_bindings.get_left() ? 1.0 : 0.0) + (keyboard_bindings.get_right() ? -1.0 : 0.0),
 					0.0
 				); // TODO proper directions after test
 				pos = pos + speed.Normalized() * dt;

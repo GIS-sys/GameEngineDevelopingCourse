@@ -3,6 +3,8 @@
 #include <Game.h>
 #include <GameObject.h>
 
+#include <Core/Keyboard.h>
+
 namespace GameEngine
 {
 	Game::Game(
@@ -59,7 +61,12 @@ namespace GameEngine
 			}
 			else if (i == 1)
 			{
-				pos.y -= 0.5f * dt;
+				Math::Vector3f speed(
+					(KeyboardBindings::get_forward() ? 1.0 : 0.0) + (KeyboardBindings::get_backward() ? -1.0 : 0.0),
+					(KeyboardBindings::get_left() ? 1.0 : 0.0) + (KeyboardBindings::get_right() ? -1.0 : 0.0),
+					0.0
+				); // TODO proper directions after test
+				pos = pos + speed.Normalized() * dt;
 			}
 			else if (i == 2)
 			{

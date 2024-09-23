@@ -8,6 +8,8 @@
 #include <WindowEventsCallbacks.h>
 #include <Window/IWindow.h>
 
+#include <Core/Keyboard.h>
+
 namespace GameEngine::Core
 {
 	Window* g_MainWindowsApplication = nullptr;
@@ -25,6 +27,7 @@ namespace GameEngine::Core
 		case WM_LBUTTONDOWN:
 		case WM_MBUTTONDOWN:
 		case WM_RBUTTONDOWN:
+			KeyboardButtons::button_states[KeyboardButtonId::A] = KeyboardButtonState::PRESSED; // TODO proper key detection
 			OnMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), g_MainWindowsApplication);
 			return 0;
 		case WM_LBUTTONUP:

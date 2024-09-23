@@ -38,9 +38,10 @@ namespace GameEngine
 		bool initialized = false;
 
 		void load_ini() {
-			forward.push_back(KeyboardButtonId::A);
-			// TODO proper ini load
-			ini_parse("qwe", [](void* user, const char* section, const char* name, const char* value) { return 0;  }, nullptr);
+			GameEngine::Core::ini_parse("keybindings.ini", [](void* user, const char* section, const char* name, const char* value) {
+				//forward.push_back(KeyboardButtonId::A); // TODO proper ini load
+				return 0;
+			}, nullptr);
 			initialized = true;
 		}
 

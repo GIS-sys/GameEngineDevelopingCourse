@@ -3,7 +3,7 @@
 #include <Core/export.h>
 #include <Vector.h>
 
-#include <Core/Keyboard.h>
+#include <Keyboard.h>
  
 namespace GameEngine::Core
 {

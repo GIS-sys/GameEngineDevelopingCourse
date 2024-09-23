@@ -11,7 +11,7 @@ http://code.google.com/p/inih/
 #include <ctype.h>
 #include <string.h>
 
-#include <Core/ini.h>
+#include <ini.h>
 
 #if !INI_USE_STACK
 #include <stdlib.h>
@@ -59,10 +59,7 @@ static char* strncpy0(char* dest, const char* src, size_t size)
 }
 
 /* See documentation in header file. */
-int ini_parse_file(FILE* file,
-    int (*handler)(void*, const char*, const char*,
-        const char*),
-    void* user)
+int ini_parse_file(FILE* file, int(*handler)(void* user, const char* section, const char* name, const char* value), void* user)
 {
     /* Uses a fair bit of stack (use heap instead if you need to) */
 #if INI_USE_STACK
@@ -164,10 +161,7 @@ int ini_parse_file(FILE* file,
     return error;
 }
 
-/* See documentation in header file. */
-int ini_parse(const char* filename,
-    int (*handler)(void*, const char*, const char*, const char*),
-    void* user)
+int ini_parse(const char* filename, int(*handler)(void* user, const char* section, const char* name, const char* value), void* user)
 {
     FILE* file;
     int error;

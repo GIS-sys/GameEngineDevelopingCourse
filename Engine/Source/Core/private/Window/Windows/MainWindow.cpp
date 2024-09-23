@@ -9,7 +9,7 @@
 #include <Window/IWindow.h>
 
 #include <iostream>
-#include <Core/Keyboard.h>
+#include <Keyboard.h>
 
 namespace GameEngine::Core
 {

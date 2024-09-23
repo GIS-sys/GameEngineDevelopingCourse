@@ -3,7 +3,7 @@
 #include <Game.h>
 #include <GameObject.h>
 
-#include <Core/Keyboard.h>
+#include <Keyboard.h>
 
 namespace GameEngine
 {

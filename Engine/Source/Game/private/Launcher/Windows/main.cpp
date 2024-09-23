@@ -2,7 +2,7 @@
 // Windows Header Files
 #include <windows.h>
 #include <Window/IWindow.h>
-#include <Core/Keyboard.h>
+#include <Keyboard.h>
 #include <Game.h>
 #include <array.h>
 #include <iostream>

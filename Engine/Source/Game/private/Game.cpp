@@ -3,12 +3,16 @@
 #include <Game.h>
 #include <GameObject.h>
 
+#include <Keyboard.h>
+
 namespace GameEngine
 {
 	Game::Game(
-		std::function<bool()> PlatformLoopFunc
+		std::function<bool()> PlatformLoopFunc,
+		KeyboardButtons* keyboard_buttons
 	) :
-		PlatformLoop(PlatformLoopFunc)
+		PlatformLoop(PlatformLoopFunc),
+		keyboard_bindings(keyboard_buttons)
 	{
 		Core::g_MainCamera = new Core::Camera();
 		Core::g_MainCamera->SetPosition(Math::Vector3f(0.0f, 6.0f, -6.0f));
@@ -59,7 +63,12 @@ namespace GameEngine
 			}
 			else if (i == 1)
 			{
-				pos.y -= 0.5f * dt;
+				Math::Vector3f speed(
+					(keyboard_bindings.get_right() ? 1.0 : 0.0) + (keyboard_bindings.get_left() ? -1.0 : 0.0),
+					(keyboard_bindings.get_up() ? 1.0 : 0.0) + (keyboard_bindings.get_down() ? -1.0 : 0.0),
+					(keyboard_bindings.get_forward() ? 1.0 : 0.0) + (keyboard_bindings.get_backward() ? -1.0 : 0.0)
+				);
+				pos = pos + speed.Normalized() * dt;
 			}
 			else if (i == 2)
 			{

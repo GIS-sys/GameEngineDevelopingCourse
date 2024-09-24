@@ -14,7 +14,8 @@ namespace GameEngine
 	public:
 		Game() = delete;
 		Game(
-			std::function<bool()> PlatformLoopFunc
+			std::function<bool()> PlatformLoopFunc,
+			KeyboardButtons* keyboard_buttons
 		);
 
 	public:
@@ -24,6 +25,7 @@ namespace GameEngine
 	private:
 		// The main idea behind having this functor is to abstract the common code from the platfrom-specific code
 		std::function<bool()> PlatformLoop = nullptr;
+		KeyboardBindings keyboard_bindings;
 
 	private:
 		Core::Timer m_GameTimer;

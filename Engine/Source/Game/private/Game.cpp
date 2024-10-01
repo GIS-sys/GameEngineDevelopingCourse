@@ -18,22 +18,20 @@ namespace GameEngine
 		m_renderThread = std::make_unique<Render::RenderThread>();
 
 		// How many objects do we want to create
-		for (int i = 0; i < 4; ++i) // TODO
+		for (int i = 0; i < 100; ++i)
 		{
 			const int MAX_OBJECT_TYPES = 4;
-			int random_choice = 0;
-			for (int obj_type = 1; obj_type < MAX_OBJECT_TYPES; ++obj_type) random_choice += (std::rand() + obj_type) % MAX_OBJECT_TYPES;
-			random_choice = i; // TODO
+			int random_choice = std::rand() % MAX_OBJECT_TYPES;
 			if (random_choice == 0) {
-				m_Objects.push_back(new ControllableGameObject());
-			} else if (random_choice == 1) {
 				m_Objects.push_back(new PhysicalGameObject());
+			} else if (random_choice == 1) {
+				m_Objects.push_back(new ControllableGameObject());
 			} else if (random_choice == 2) {
 				m_Objects.push_back(new OscillatingGameObject(Math::Vector3f(5.0, -0.2, 0.5), 6.0));
 			} else {
 				m_Objects.push_back(new MovingGameObject(Math::Vector3f(0.0, 1.0, 2.0)));
 			}
-			m_Objects.back()->SetPosition(Math::Vector3f(0.0, i * 2.5, 0.0), 0);
+			m_Objects.back()->SetPosition(Math::Vector3f(0.0, i * 2.5, 0.0), m_renderThread->GetMainFrame());
 			Render::RenderObject** renderObject = m_Objects.back()->GetRenderObjectRef();
 			m_renderThread->EnqueueCommand(Render::ERC::CreateRenderObject, RenderCore::DefaultGeometry::Cube(), renderObject);
 		}

@@ -80,7 +80,10 @@ namespace GameEngine
 
 	class ControllableGameObject : public GameObject {
 	public:
-		virtual void move(size_t frame, float dt, const std::vector<GameObject*>&) {}
+		virtual void move(size_t frame, float dt, const std::vector<GameObject*>&) {
+			Math::Vector3f pos = GetPosition();
+			SetPosition(pos, frame);
+		}
 	};
 
 	class PhysicalGameObject : public GameObject {
@@ -100,7 +103,7 @@ namespace GameEngine
 				if (neighbour == this) continue;
 				Math::Vector3f neighbour_pos = neighbour->GetPosition();
 				if (std::abs(neighbour_pos.x - predicted_pos.x) <= 2.0 && std::abs(neighbour_pos.y - predicted_pos.y) <= 2.0 && std::abs(neighbour_pos.z - predicted_pos.z) <= 2.0) {
-					current_speed = -current_speed;
+					current_speed = -current_speed; // Yes I know it's not a proper collision mechanic but the task was to create a simple physics
 					predicted_pos = pos + current_speed * dt;
 				}
 			}

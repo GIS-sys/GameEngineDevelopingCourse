@@ -3,6 +3,7 @@
 #include <RenderObject.h>
 #include <RenderThread.h>
 #include <Vector.h>
+#include <Constants.h>
 
 namespace GameEngine
 {
@@ -30,7 +31,7 @@ namespace GameEngine
 			return m_Position;
 		}
 
-		virtual void move(size_t frame, float dt) = 0;
+		virtual void move(size_t frame, float dt, const std::vector<GameObject*>& all_objects) = 0;
 
 	protected:
 		Render::RenderObject* m_RenderObject = nullptr;
@@ -38,22 +39,52 @@ namespace GameEngine
 		Math::Vector3f m_Position = Math::Vector3f::Zero();
 	};
 
-	class ControllableGameObject : public GameObject {
-		virtual void move(size_t frame, float dt) {}
-	};
-
 	class MovingGameObject : public GameObject {
-		virtual void move(size_t frame, float dt) {
-			Math::Vector3f pos = GetPosition();
+	protected:
+		Math::Vector3f speed;
 
-			// Showcase
-			pos.x += 0.5f * dt;
-			pos.y -= 0.5f * dt;
+	public:
+		MovingGameObject(Math::Vector3f speed) : speed(speed) {}
+
+		virtual void move(size_t frame, float dt, const std::vector<GameObject*>&) {
+			Math::Vector3f pos = GetPosition();
+			pos = pos + speed * dt;
 			SetPosition(pos, frame);
 		}
 	};
 
+	class OscillatingGameObject : public GameObject {
+	protected:
+		Math::Vector3f oscillation_vector;
+		float current_position_tick = 0.0;
+		float time_period = 0.0;
+
+		float get_oscilation_fraction() const {
+			return std::sin(current_position_tick * 2 * Math::Constants::PI / time_period);
+		}
+
+	public:
+		OscillatingGameObject(Math::Vector3f oscillation_vector, float time_period) : oscillation_vector(oscillation_vector), time_period(time_period) {}
+
+		virtual void move(size_t frame, float dt, const std::vector<GameObject*>&) {
+			float oscillatin_fraction_before = get_oscilation_fraction();
+			current_position_tick = current_position_tick + dt;
+			float oscillatin_fraction_after = get_oscilation_fraction();
+			Math::Vector3f delta = oscillation_vector * (oscillatin_fraction_after - oscillatin_fraction_before);
+
+			Math::Vector3f pos = GetPosition();
+			pos = pos + delta;
+			SetPosition(pos, frame);
+		}
+	};
+
+	class ControllableGameObject : public GameObject {
+	public:
+		virtual void move(size_t frame, float dt, const std::vector<GameObject*>&) {}
+	};
+
 	class PhysicalGameObject : public GameObject {
-		virtual void move(size_t frame, float dt) {}
+	public:
+		virtual void move(size_t frame, float dt, const std::vector<GameObject*>& all_objects) {}
 	};
 }

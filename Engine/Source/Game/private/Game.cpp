@@ -18,17 +18,21 @@ namespace GameEngine
 		m_renderThread = std::make_unique<Render::RenderThread>();
 
 		// How many objects do we want to create
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 4; ++i) // TODO
 		{
-			int random_choice = std::rand() % 3 + (std::rand() + 1) % 3 + (std::rand() + 2) % 3;
-			random_choice = i;
+			const int MAX_OBJECT_TYPES = 4;
+			int random_choice = 0;
+			for (int obj_type = 1; obj_type < MAX_OBJECT_TYPES; ++obj_type) random_choice += (std::rand() + obj_type) % MAX_OBJECT_TYPES;
+			random_choice = i; // TODO
 			if (random_choice == 0) {
 				m_Objects.push_back(new ControllableGameObject());
 			} else if (random_choice == 1) {
 				m_Objects.push_back(new PhysicalGameObject());
+			} else if (random_choice == 2) {
+				m_Objects.push_back(new OscillatingGameObject(Math::Vector3f(3.0, -0.2, 0.5), 4.0));
 			}
 			else {
-				m_Objects.push_back(new MovingGameObject());
+				m_Objects.push_back(new MovingGameObject(Math::Vector3f(0.0, 1.0, 2.0)));
 			}
 			Render::RenderObject** renderObject = m_Objects.back()->GetRenderObjectRef();
 			m_renderThread->EnqueueCommand(Render::ERC::CreateRenderObject, RenderCore::DefaultGeometry::Cube(), renderObject);
@@ -70,7 +74,7 @@ namespace GameEngine
 	{
 		for (int i = 0; i < m_Objects.size(); ++i)
 		{
-			m_Objects[i]->move(m_renderThread->GetMainFrame(), dt);
+			m_Objects[i]->move(m_renderThread->GetMainFrame(), dt, m_Objects);
 		}
 	}
 }

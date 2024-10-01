@@ -18,9 +18,20 @@ namespace GameEngine
 		m_renderThread = std::make_unique<Render::RenderThread>();
 
 		// How many objects do we want to create
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 100; ++i)
 		{
-			m_Objects.push_back(new GameObject());
+			const int MAX_OBJECT_TYPES = 4;
+			int random_choice = std::rand() % MAX_OBJECT_TYPES;
+			if (random_choice == 0) {
+				m_Objects.push_back(new PhysicalGameObject());
+			} else if (random_choice == 1) {
+				m_Objects.push_back(new ControllableGameObject());
+			} else if (random_choice == 2) {
+				m_Objects.push_back(new OscillatingGameObject(Math::Vector3f(5.0, -0.2, 0.5), 6.0));
+			} else {
+				m_Objects.push_back(new MovingGameObject(Math::Vector3f(0.0, 1.0, 2.0)));
+			}
+			m_Objects.back()->SetPosition(Math::Vector3f(0.0, i * 2.5, 0.0), m_renderThread->GetMainFrame());
 			Render::RenderObject** renderObject = m_Objects.back()->GetRenderObjectRef();
 			m_renderThread->EnqueueCommand(Render::ERC::CreateRenderObject, RenderCore::DefaultGeometry::Cube(), renderObject);
 		}
@@ -29,6 +40,18 @@ namespace GameEngine
 		Core::g_InputHandler->RegisterCallback("GoBack", [&]() { Core::g_MainCamera->Move(-Core::g_MainCamera->GetViewDir()); });
 		Core::g_InputHandler->RegisterCallback("GoRight", [&]() { Core::g_MainCamera->Move(Core::g_MainCamera->GetRightDir()); });
 		Core::g_InputHandler->RegisterCallback("GoLeft", [&]() { Core::g_MainCamera->Move(-Core::g_MainCamera->GetRightDir()); });
+		Core::g_InputHandler->RegisterCallback("MoveRight", [&]() {
+			for (GameObject* go : m_Objects) {
+				ControllableGameObject* cgo = dynamic_cast<ControllableGameObject*>(go);
+				if (cgo != 0) cgo->SetSpeed(cgo->GetSpeed() + Math::Vector3f(0.2, 0, 0), m_renderThread->GetMainFrame());
+			}
+		});
+		Core::g_InputHandler->RegisterCallback("MoveLeft", [&]() {
+			for (GameObject* go : m_Objects) {
+				ControllableGameObject* cgo = dynamic_cast<ControllableGameObject*>(go);
+				if (cgo != 0) cgo->SetSpeed(cgo->GetSpeed() - Math::Vector3f(0.2, 0, 0), m_renderThread->GetMainFrame());
+			}
+		});
 	}
 
 	void Game::Run()
@@ -60,23 +83,7 @@ namespace GameEngine
 	{
 		for (int i = 0; i < m_Objects.size(); ++i)
 		{
-			Math::Vector3f pos = m_Objects[i]->GetPosition();
-
-			// Showcase
-			if (i == 0)
-			{
-				pos.x += 0.5f * dt;
-			}
-			else if (i == 1)
-			{
-				pos.y -= 0.5f * dt;
-			}
-			else if (i == 2)
-			{
-				pos.x += 0.5f * dt;
-				pos.y -= 0.5f * dt;
-			}
-			m_Objects[i]->SetPosition(pos, m_renderThread->GetMainFrame());
+			m_Objects[i]->move(m_renderThread->GetMainFrame(), dt, m_Objects);
 		}
 	}
 }

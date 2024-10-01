@@ -79,10 +79,27 @@ namespace GameEngine
 	};
 
 	class ControllableGameObject : public GameObject {
+	protected:
+		Math::Vector3f speed;
+
 	public:
 		virtual void move(size_t frame, float dt, const std::vector<GameObject*>&) {
 			Math::Vector3f pos = GetPosition();
+			Math::Vector3f speed = GetSpeed();
+			pos = pos + speed * dt;
 			SetPosition(pos, frame);
+		}
+
+		void SetSpeed(Math::Vector3f new_speed, size_t frame) {
+			speed = new_speed;
+			if (m_RenderObject) [[likely]]
+			{
+				//m_RenderObject->SetSpeed(new_speed, frame);
+			}
+		}
+
+		Math::Vector3f GetSpeed() const {
+			return speed;
 		}
 	};
 

@@ -40,7 +40,18 @@ namespace GameEngine
 		Core::g_InputHandler->RegisterCallback("GoBack", [&]() { Core::g_MainCamera->Move(-Core::g_MainCamera->GetViewDir()); });
 		Core::g_InputHandler->RegisterCallback("GoRight", [&]() { Core::g_MainCamera->Move(Core::g_MainCamera->GetRightDir()); });
 		Core::g_InputHandler->RegisterCallback("GoLeft", [&]() { Core::g_MainCamera->Move(-Core::g_MainCamera->GetRightDir()); });
-		//Core::g_InputHandler->RegisterCallback("GoRight", [&]() { m_Objects[0]->SetPosition(m_Objects[0]->GetPosition() + Math::Vector3f(0.01, 0.0, 0.0), m_renderThread->GetMainFrame()); });
+		Core::g_InputHandler->RegisterCallback("GoRight", [&]() {
+			for (GameObject* go : m_Objects) {
+				ControllableGameObject* cgo = dynamic_cast<ControllableGameObject*>(go);
+				if (cgo != 0) cgo->SetSpeed(Math::Vector3f(1, 0, 0), m_renderThread->GetMainFrame());
+			}
+		});
+		Core::g_InputHandler->RegisterCallback("GoLeft", [&]() {
+			for (GameObject* go : m_Objects) {
+				ControllableGameObject* cgo = dynamic_cast<ControllableGameObject*>(go);
+				if (cgo != 0) cgo->SetSpeed(Math::Vector3f(-1, 0, 0), m_renderThread->GetMainFrame());
+			}
+		});
 	}
 
 	void Game::Run()

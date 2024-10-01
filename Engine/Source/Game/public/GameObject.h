@@ -84,7 +84,29 @@ namespace GameEngine
 	};
 
 	class PhysicalGameObject : public GameObject {
+	protected:
+		Math::Vector3f current_speed = Math::Vector3f(0.0, 6.0, 0.0);
+
 	public:
-		virtual void move(size_t frame, float dt, const std::vector<GameObject*>& all_objects) {}
+		static constexpr float GRAVITY = 9.81 / 5;
+
+		virtual void move(size_t frame, float dt, const std::vector<GameObject*>& all_objects) {
+			// gravity
+			current_speed = current_speed + Math::Vector3f(0.0, -1.0, 0.0) * GRAVITY * dt;
+			// collision
+			Math::Vector3f pos = GetPosition();
+			Math::Vector3f predicted_pos = pos + current_speed * dt;
+			for (GameObject* neighbour : all_objects) {
+				if (neighbour == this) continue;
+				Math::Vector3f neighbour_pos = neighbour->GetPosition();
+				if (std::abs(neighbour_pos.x - predicted_pos.x) <= 2.0 && std::abs(neighbour_pos.y - predicted_pos.y) <= 2.0 && std::abs(neighbour_pos.z - predicted_pos.z) <= 2.0) {
+					current_speed = -current_speed;
+					predicted_pos = pos + current_speed * dt;
+				}
+			}
+			// move
+			pos = pos + current_speed * dt;
+			SetPosition(pos, frame);
+		}
 	};
 }

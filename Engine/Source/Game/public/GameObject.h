@@ -59,7 +59,7 @@ namespace GameEngine
 		float current_position_tick = 0.0;
 		float time_period = 0.0;
 
-		float get_oscilation_fraction() const {
+		float get_oscillation_fraction() const {
 			return std::sin(current_position_tick * 2 * Math::Constants::PI / time_period);
 		}
 
@@ -67,9 +67,9 @@ namespace GameEngine
 		OscillatingGameObject(Math::Vector3f oscillation_vector, float time_period) : oscillation_vector(oscillation_vector), time_period(time_period) {}
 
 		virtual void move(size_t frame, float dt, const std::vector<GameObject*>&) {
-			float oscillatin_fraction_before = get_oscilation_fraction();
+			float oscillatin_fraction_before = get_oscillation_fraction();
 			current_position_tick = current_position_tick + dt;
-			float oscillatin_fraction_after = get_oscilation_fraction();
+			float oscillatin_fraction_after = get_oscillation_fraction();
 			Math::Vector3f delta = oscillation_vector * (oscillatin_fraction_after - oscillatin_fraction_before);
 
 			Math::Vector3f pos = GetPosition();

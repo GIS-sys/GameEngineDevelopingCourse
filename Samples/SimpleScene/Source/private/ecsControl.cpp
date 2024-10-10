@@ -61,6 +61,8 @@ void RegisterEcsControlSystems(flecs::world& world)
 {
 	// TODO
 
+	static auto camera_query = world.query<const CameraPtr>();
+
 	world.system<AfterbounceLifetime, const BouncePlane>()
 		.each([&](AfterbounceLifetime& lifetime, const BouncePlane& bounce_plance) {
 		if (!lifetime.enabled && bounce_plance.ever_bounced) {
@@ -80,32 +82,34 @@ void RegisterEcsControlSystems(flecs::world& world)
 		}
 	});
 
-	world.system<const ControllerPtr, /*CameraPtr,*/ Position, const ShootVelocity, ReloadCooldown, ShotCooldown, Magazine>()
-		.each([&](const ControllerPtr& controller, /*CameraPtr camera,*/ Position& pos, const ShootVelocity shoot_vel, ReloadCooldown& reload_cd, ShotCooldown& shot_cd, Magazine& magazine) {
-		reload_cd.current -= world.delta_time();
-		shot_cd.current -= world.delta_time();
-		if (controller.ptr->IsPressed("Attack")) {
-			if (reload_cd.current <= 0 && shot_cd.current <= 0) {
-				shot_cd.current = shot_cd.maximum;
-				magazine.current -= 1;
-				if (magazine.current <= 0) {
-					magazine.current = magazine.maximum;
-					reload_cd.current = reload_cd.maximum;
+	world.system<const ControllerPtr, Position, const ShootVelocity, ReloadCooldown, ShotCooldown, Magazine>()
+		.each([&](flecs::entity e, const ControllerPtr& controller, Position& pos, const ShootVelocity shoot_vel, ReloadCooldown& reload_cd, ShotCooldown& shot_cd, Magazine& magazine) {
+		camera_query.each([&](const CameraPtr& camera) {
+			reload_cd.current -= world.delta_time();
+			shot_cd.current -= world.delta_time();
+			if (controller.ptr->IsPressed("Attack")) {
+				if (reload_cd.current <= 0 && shot_cd.current <= 0) {
+					shot_cd.current = shot_cd.maximum;
+					magazine.current -= 1;
+					if (magazine.current <= 0) {
+						magazine.current = magazine.maximum;
+						reload_cd.current = reload_cd.maximum;
+					}
+					Math::Vector3f bullet_direction = camera.ptr->GetViewDir();
+					//Math::Vector3f bullet_direction(1.0, 0.0, 0.0);
+					Math::Vector3f bullet_speed = bullet_direction * shoot_vel.value;
+					Math::Vector3f bullet_pos = bullet_direction + Math::Vector3f(pos.x, pos.y, pos.z);
+					world.entity()
+						.set(Position{ bullet_pos.x, bullet_pos.y, bullet_pos.z })
+						.set(Velocity{ bullet_speed.x, bullet_speed.y, bullet_speed.z })
+						.set(Bullet())
+						.set(Gravity{ 0.0, -9.8, 0.0 })
+						.set(BouncePlane{ 0.0,1.0,0.0,5.0 })
+						.set(Bounciness{ 1.0 })
+						.set(AfterbounceLifetime{ 0.0, 5.0, false });
 				}
-				//Math::Vector3f bullet_direction = camera.ptr->GetViewDir();
-				Math::Vector3f bullet_direction(1.0, 0.0, 0.0);
-				Math::Vector3f bullet_speed = bullet_direction * shoot_vel.value;
-				Math::Vector3f bullet_pos = bullet_direction + Math::Vector3f(pos.x, pos.y, pos.z);
-				world.entity()
-					.set(Position{ bullet_pos .x, bullet_pos .y, bullet_pos .z } )
-					.set(Velocity{ bullet_speed.x, bullet_speed.y, bullet_speed.z })
-					.set(Bullet())
-					.set(Gravity{0.0, -9.8, 0.0})
-					.set(BouncePlane{ 0.0,1.0,0.0,5.0 })
-					.set(Bounciness{1.0})
-					.set(AfterbounceLifetime{ 0.0, 5.0, false });
 			}
-		}
+			});
 	});
 
 	world.system<Position, CameraPtr, const Speed, const ControllerPtr>()

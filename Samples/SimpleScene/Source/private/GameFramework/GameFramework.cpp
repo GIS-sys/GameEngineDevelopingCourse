@@ -74,8 +74,25 @@ void GameFramework::RegisterComponentsReflection()
 	m_World.component<JumpSpeed>()
 		.member<float>("value");
 
-	m_World.component<FireRate>()
+	m_World.component<Lifetime>()
 		.member<float>("value");
+
+	m_World.component<ShotCooldown>()
+		.member<float>("current")
+		.member<float>("maximum");
+
+	m_World.component<ReloadCooldown>()
+		.member<float>("current")
+		.member<float>("maximum");
+
+	m_World.component<Magazine>()
+		.member<float>("current")
+		.member<float>("maximum");
+
+	m_World.component<ShootVelocity>()
+		.member<float>("x")
+		.member<float>("y")
+		.member<float>("z");
 }
 
 void GameFramework::RegisterSystems()

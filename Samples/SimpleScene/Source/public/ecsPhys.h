@@ -53,10 +53,29 @@ struct Speed
 	float value;
 };
 
-struct FireRate {
-	float value;
-};
 
 struct Lifetime {
 	float value;
+};
+
+
+struct ShotCooldown {
+	float current;
+	float maximum;
+};
+
+struct ReloadCooldown {
+	float current;
+	float maximum;
+};
+
+struct Magazine {
+	float current;
+	float maximum;
+};
+
+struct ShootVelocity {
+	float x;
+	float y;
+	float z;
 };

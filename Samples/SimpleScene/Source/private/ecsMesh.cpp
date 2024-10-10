@@ -20,7 +20,7 @@ void RegisterEcsMeshSystems(flecs::world& world)
 	});
 
 	world.system<RenderObjectPtr, const Position>()
-		.each([&](RenderObjectPtr& renderObject, const Position& position)
+		.each([&](flecs::entity e, RenderObjectPtr& renderObject, const Position& position)
 	{
 		renderObject.ptr->SetPosition(position.value, renderThread->ptr->GetMainFrame());
 	});

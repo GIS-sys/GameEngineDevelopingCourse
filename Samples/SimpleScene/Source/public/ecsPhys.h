@@ -21,6 +21,7 @@ struct Gravity
 struct BouncePlane
 {
 	GameEngine::Math::Vector4f value;
+	bool ever_bounced = false;
 };
 
 struct Bounciness
@@ -42,3 +43,35 @@ using Speed = float;
 
 void RegisterEcsPhysSystems(flecs::world& world);
 
+
+
+struct AfterbounceLifetime {
+	float current;
+	float maximum;
+	bool enabled;
+};
+
+struct ShotCooldown {
+	float current;
+	float maximum;
+};
+
+struct ReloadCooldown {
+	float current;
+	float maximum;
+};
+
+struct Magazine {
+	int current;
+	int maximum;
+};
+
+struct ShootVelocity {
+	float value;
+};
+
+struct Destructible { bool empty = false; };
+
+struct AdditionalAmmo {
+	int value;
+};

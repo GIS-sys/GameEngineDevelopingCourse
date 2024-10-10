@@ -28,8 +28,8 @@ void RegisterEcsPhysSystems(flecs::world& world)
 	});
 
 
-	world.system<Velocity, Position, const BouncePlane, const Bounciness>()
-		.each([&](Velocity& vel, Position& pos, const BouncePlane& plane, const Bounciness& bounciness)
+	world.system<Velocity, Position, BouncePlane, const Bounciness>()
+		.each([&](Velocity& vel, Position& pos, BouncePlane& plane, const Bounciness& bounciness)
 	{
 		float dotPos = plane.value.x * pos.value.x + plane.value.y * pos.value.y + plane.value.z * pos.value.z;
 		float dotVel = plane.value.x * vel.value.x + plane.value.y * vel.value.y + plane.value.z * vel.value.z;
@@ -42,6 +42,8 @@ void RegisterEcsPhysSystems(flecs::world& world)
 			vel.value.x -= (1.f + bounciness.value) * plane.value.x * dotVel;
 			vel.value.y -= (1.f + bounciness.value) * plane.value.y * dotVel;
 			vel.value.z -= (1.f + bounciness.value) * plane.value.z * dotVel;
+
+			plane.ever_bounced = true;
 		}
 	});
 

@@ -24,6 +24,7 @@ namespace GameEngine::Render
 
 		for (RenderObject* renderObject : m_RenderObjects)
 		{
+			if (renderObject->is_destroyed) continue;
 			m_rhi->Draw(renderObject->GetRenderData(), frame);
 		}
 

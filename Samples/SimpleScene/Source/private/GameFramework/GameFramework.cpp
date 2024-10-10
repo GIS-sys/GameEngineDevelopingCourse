@@ -37,6 +37,14 @@ void GameFramework::Init()
 		.set(GeometryPtr{ RenderCore::DefaultGeometry::Cube() })
 		.set(RenderObjectPtr{ new Render::RenderObject() });
 
+	flecs::entity gun = m_World.entity()
+		.set(Position{ Math::Vector3f(0.0,10.0,5.0) })
+		.set(ShootVelocity{ 15.0 })
+		.set(ReloadCooldown{ 0.0,2.0 })
+		.set(ShotCooldown{ 0.0,0.5 })
+		.set(Magazine{ 6.0,6.0 })
+		.set(ControllerPtr{ new Core::Controller(Core::g_FileSystem->GetConfigPath("Input_default.ini")) });
+
 	flecs::entity camera = m_World.entity()
 		.set(Position{ Math::Vector3f(0.0f, 12.0f, -10.0f) })
 		.set(Speed{ 10.f })

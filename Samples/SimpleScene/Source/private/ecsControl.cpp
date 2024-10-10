@@ -7,10 +7,114 @@
 #include <Input/InputHandler.h>
 #include <Vector.h>
 
+#include <Geometry.h>
+#include <ecsMesh.h>
+#include <RenderObject.h>
+
 using namespace GameEngine;
+
+RenderCore::Geometry::Ptr Bullet() {
+	constexpr Core::array<RenderCore::Geometry::VertexType, 8> vertices =
+	{
+		Math::Vector3f(-0.2f, -0.2f, -1.0f),
+		Math::Vector3f(-0.2f, +0.2f, -1.0f),
+		Math::Vector3f(+1.0f, +1.0f, -1.0f),
+		Math::Vector3f(+1.0f, -1.0f, -1.0f),
+		Math::Vector3f(-0.2f, -0.2f, +1.0f),
+		Math::Vector3f(-0.2f, +0.2f, +1.0f),
+		Math::Vector3f(+1.0f, +1.0f, +1.0f),
+		Math::Vector3f(+1.0f, -1.0f, +1.0f)
+	};
+
+	constexpr Core::array<RenderCore::Geometry::IndexType, 36> indices =
+	{
+		// front face
+		0, 1, 2,
+		0, 2, 3,
+
+		// back face
+		4, 6, 5,
+		4, 7, 6,
+
+		// left face
+		4, 5, 1,
+		4, 1, 0,
+
+		// right face
+		3, 2, 6,
+		3, 6, 7,
+
+		// top face
+		1, 5, 6,
+		1, 6, 2,
+
+		// bottom face
+		4, 0, 3,
+		4, 3, 7
+	};
+
+	return std::make_shared<RenderCore::Geometry>((RenderCore::Geometry::VertexType*)vertices.begin(), vertices.size(), (RenderCore::Geometry::IndexType*)indices.begin(), indices.size());
+}
 
 void RegisterEcsControlSystems(flecs::world& world)
 {
+	// TODO
+
+	static auto camera_query = world.query<const CameraPtr>();
+
+	world.system<AfterbounceLifetime, const BouncePlane>()
+		.each([&](AfterbounceLifetime& lifetime, const BouncePlane& bounce_plance) {
+		if (!lifetime.enabled && bounce_plance.ever_bounced) {
+			lifetime.enabled = true;
+			lifetime.current = lifetime.maximum;
+		}
+	});
+
+	world.system<AfterbounceLifetime>()
+		.each([&](flecs::entity e, AfterbounceLifetime& lifetime) {
+		if (!lifetime.enabled) return;
+		lifetime.current -= world.delta_time();
+		if (lifetime.current <= 0.0) {
+			// TODO
+			e.disable();
+			e.destruct();
+			e.clear();
+		}
+	});
+
+	world.system<const ControllerPtr, Position, const ShootVelocity, ReloadCooldown, ShotCooldown, Magazine>()
+		.each([&](flecs::entity e, const ControllerPtr& controller, Position& pos, const ShootVelocity shoot_vel, ReloadCooldown& reload_cd, ShotCooldown& shot_cd, Magazine& magazine) {
+		camera_query.each([&](const CameraPtr& camera) {
+			reload_cd.current -= world.delta_time();
+			shot_cd.current -= world.delta_time();
+			if (controller.ptr->IsPressed("Attack")) {
+				if (reload_cd.current <= 0 && shot_cd.current <= 0) {
+					shot_cd.current = shot_cd.maximum;
+					magazine.current -= 1;
+					if (magazine.current <= 0) {
+						magazine.current = magazine.maximum;
+						reload_cd.current = reload_cd.maximum;
+					}
+					Math::Vector3f bullet_direction = camera.ptr->GetViewDir();
+					Math::Vector3f bullet_speed = bullet_direction * shoot_vel.value;
+					//Math::Vector3f bullet_pos = bullet_direction + Math::Vector3f(pos.value.x, pos.value.y, pos.value.z);
+					Math::Vector3f bullet_pos = bullet_direction + Math::Vector3f(camera.ptr->GetPosition().x, camera.ptr->GetPosition().y, camera.ptr->GetPosition().z);
+					world.entity()
+						.set(Position{ bullet_pos })
+						.set(Velocity{ bullet_speed })
+						.set(Gravity(Math::Vector3f(0.0, -9.8, 0.0)))
+						.set(BouncePlane{ Math::Vector4f(0.0,1.0,0.0,5.0) })
+						.set(Bounciness{ 1.0 })
+						.set(AfterbounceLifetime{ 0.0, 3.0, false })
+						.set(GeometryPtr{ Bullet() })
+						.set(RenderObjectPtr{ new Render::RenderObject() });
+				}
+			}
+		});
+	});
+
+
+
 	world.system<Position, CameraPtr, const Speed, const ControllerPtr>()
 		.each([&](flecs::entity e, Position& position, CameraPtr& camera, const Speed& speed, const ControllerPtr& controller)
 	{

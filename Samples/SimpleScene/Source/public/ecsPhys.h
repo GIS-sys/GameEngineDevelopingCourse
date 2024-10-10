@@ -62,10 +62,16 @@ struct ReloadCooldown {
 };
 
 struct Magazine {
-	float current;
-	float maximum;
+	int current;
+	int maximum;
 };
 
 struct ShootVelocity {
 	float value;
+};
+
+struct Destructible { bool empty = false; };
+
+struct AdditionalAmmo {
+	int value;
 };

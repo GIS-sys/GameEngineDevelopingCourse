@@ -26,7 +26,7 @@ namespace GameEngine
 			explicit constexpr Vector2(float _x, float _y) noexcept : x(_x), y(_y) {}
 			explicit constexpr Vector2(T vector[2]) : x(vector[0]), y(vector[1]) {}
 
-			inline Vector2<T> operator-(Vector2<T> other)
+			inline Vector2<T> operator-(Vector2<T> other) const
 			{
 				Vector2<T> result;
 				result.x = x - other.x;
@@ -34,7 +34,7 @@ namespace GameEngine
 				return result;
 			}
 
-			inline Vector2<T> operator-()
+			inline Vector2<T> operator-() const
 			{
 				Vector2<T> result;
 				result.x = -x;
@@ -42,7 +42,7 @@ namespace GameEngine
 				return result;
 			}
 
-			inline bool operator!=(Vector2<T> other)
+			inline bool operator!=(Vector2<T> other) const
 			{
 				return x != other.x || y != other.y;
 			}
@@ -91,7 +91,7 @@ namespace GameEngine
 				return result;
 			}
 
-			inline Vector3<T> operator+(Vector3<T> other)
+			inline Vector3<T> operator+(Vector3<T> other) const
 			{
 				Vector3<T> result;
 				result.x = x + other.x;
@@ -100,7 +100,7 @@ namespace GameEngine
 				return result;
 			}
 
-			inline Vector3<T> operator-(Vector3<T> other)
+			inline Vector3<T> operator-(Vector3<T> other) const
 			{
 				Vector3<T> result;
 				result.x = x - other.x;
@@ -109,7 +109,7 @@ namespace GameEngine
 				return result;
 			}
 
-			inline Vector3<T> operator-()
+			inline Vector3<T> operator-() const
 			{
 				Vector3<T> result;
 				result.x = -x;
@@ -118,12 +118,12 @@ namespace GameEngine
 				return result;
 			}
 
-			inline float operator*(Vector3<T> other)
+			inline float operator*(Vector3<T> other) const
 			{
 				return x * other.x + y * other.y + z * other.z;
 			}
 
-			inline Vector3<T> operator*(float scale)
+			inline Vector3<T> operator*(float scale) const
 			{
 				return Vector3<T>(x * scale, y * scale, z * scale);
 			}
@@ -137,7 +137,7 @@ namespace GameEngine
 					x * other.y - y * other.x);
 			}
 
-			inline bool operator!=(Vector3<T> other)
+			inline bool operator!=(Vector3<T> other) const
 			{
 				return x != other.x || y != other.y || z != other.z;
 			}
@@ -165,7 +165,7 @@ namespace GameEngine
 			explicit constexpr Vector4(float _x, float _y, float _z, float _w) noexcept : x(_x), y(_y), z(_z), w(_w) {}
 			explicit constexpr Vector4(T vector[4]) : x(vector[0]), y(vector[1]), z(vector[2]), w(vector[3]) {}
 
-			inline Vector4<T> operator-(Vector4<T> other)
+			inline Vector4<T> operator-(Vector4<T> other) const
 			{
 				Vector4<T> result;
 				result.x = x - other.x;
@@ -175,7 +175,7 @@ namespace GameEngine
 				return result;
 			}
 
-			inline bool operator!=(Vector4<T> other)
+			inline bool operator!=(Vector4<T> other) const
 			{
 				return x != other.x && y != other.y && z != other.z && w != other.w;
 			}

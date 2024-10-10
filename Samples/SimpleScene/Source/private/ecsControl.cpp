@@ -58,9 +58,9 @@ RenderCore::Geometry::Ptr Bullet() {
 
 void RegisterEcsControlSystems(flecs::world& world)
 {
-	// TODO
-
 	static auto camera_query = world.query<const CameraPtr>();
+	static auto projectiles_query = world.query<const Position, const AfterbounceLifetime>();
+	static auto magazine_query = world.query<Magazine>();
 
 	world.system<AfterbounceLifetime, const BouncePlane>()
 		.each([&](AfterbounceLifetime& lifetime, const BouncePlane& bounce_plance) {
@@ -83,7 +83,7 @@ void RegisterEcsControlSystems(flecs::world& world)
 	});
 
 	world.system<const ControllerPtr, Position, const ShootVelocity, ReloadCooldown, ShotCooldown, Magazine>()
-		.each([&](flecs::entity e, const ControllerPtr& controller, Position& pos, const ShootVelocity shoot_vel, ReloadCooldown& reload_cd, ShotCooldown& shot_cd, Magazine& magazine) {
+		.each([&](const ControllerPtr& controller, Position& pos, const ShootVelocity shoot_vel, ReloadCooldown& reload_cd, ShotCooldown& shot_cd, Magazine& magazine) {
 		camera_query.each([&](const CameraPtr& camera) {
 			reload_cd.current -= world.delta_time();
 			shot_cd.current -= world.delta_time();
@@ -109,6 +109,26 @@ void RegisterEcsControlSystems(flecs::world& world)
 						.set(GeometryPtr{ Bullet() })
 						.set(RenderObjectPtr{ new Render::RenderObject() });
 				}
+			}
+		});
+	});
+
+	world.system<const Position>()
+		.with<Destructible>()
+		.each([&](flecs::entity e, const Position& pos) {
+		projectiles_query.each([&](flecs::entity projectile, const Position& projectile_pos, const AfterbounceLifetime&) {
+			if ((pos.value - projectile_pos.value).GetLength() < 4.0) {
+				if (e.has<AdditionalAmmo>()) {
+					AdditionalAmmo additional_ammo = *e.get<AdditionalAmmo>();
+					magazine_query.each([&](Magazine& magazine) { magazine.current += additional_ammo.value; });
+				}
+				// TODO
+				e.disable();
+				e.destruct();
+				e.clear();
+				projectile.disable();
+				projectile.destruct();
+				projectile.clear();
 			}
 		});
 	});

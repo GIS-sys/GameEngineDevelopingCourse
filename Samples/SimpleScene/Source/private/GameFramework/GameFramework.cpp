@@ -42,8 +42,21 @@ void GameFramework::Init()
 		.set(ShootVelocity{ 15.0 })
 		.set(ReloadCooldown{ 0.0,2.0 })
 		.set(ShotCooldown{ 0.0,0.5 })
-		.set(Magazine{ 6.0,6.0 })
+		.set(Magazine{ 6,6 })
 		.set(ControllerPtr{ new Core::Controller(Core::g_FileSystem->GetConfigPath("Input_default.ini")) });
+
+	flecs::entity target = m_World.entity()
+		.set(Position{ Math::Vector3f(15.f, 15.f, 0.f) })
+		.set(Destructible())
+		.set(GeometryPtr{ RenderCore::DefaultGeometry::Box() })
+		.set(RenderObjectPtr{ new Render::RenderObject() });
+
+	flecs::entity target_ammo = m_World.entity()
+		.set(Position{ Math::Vector3f(-15.f, 15.f, 0.f) })
+		.set(Destructible())
+		.set(AdditionalAmmo{ 2 })
+		.set(GeometryPtr{ RenderCore::DefaultGeometry::Box() })
+		.set(RenderObjectPtr{ new Render::RenderObject() });
 
 	flecs::entity camera = m_World.entity()
 		.set(Position{ Math::Vector3f(0.0f, 12.0f, -10.0f) })

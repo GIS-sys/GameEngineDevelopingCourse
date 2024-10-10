@@ -2,6 +2,8 @@
 
 #include <flecs.h>
 
+// TODO
+
 struct Position
 {
 	float x;
@@ -51,3 +53,10 @@ struct Speed
 	float value;
 };
 
+struct FireRate {
+	float value;
+};
+
+struct Lifetime {
+	float value;
+};

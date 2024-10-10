@@ -7,6 +7,8 @@
 
 namespace GameEngine::Render
 {
+	// TODO
+
 	RenderEngine::RenderEngine()
 	{
 		m_rhi = HAL::RHIHelper::CreateRHI("D3D12");

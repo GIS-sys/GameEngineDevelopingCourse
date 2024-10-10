@@ -11,6 +11,8 @@
 
 using namespace GameEngine;
 
+// TODO
+
 void GameFramework::Init()
 {
 	RegisterComponentsReflection();
@@ -70,6 +72,9 @@ void GameFramework::RegisterComponentsReflection()
 		.member<float>("value");
 
 	m_World.component<JumpSpeed>()
+		.member<float>("value");
+
+	m_World.component<FireRate>()
 		.member<float>("value");
 }
 

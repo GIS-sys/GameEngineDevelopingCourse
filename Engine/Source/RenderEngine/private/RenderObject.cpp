@@ -3,6 +3,8 @@
 
 namespace GameEngine::Render
 {
+	// TODO
+
 	RenderObject::~RenderObject()
 	{
 		delete m_RenderData;

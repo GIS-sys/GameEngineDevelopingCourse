@@ -57,7 +57,8 @@ void GameFramework::RegisterComponentsReflection()
 		.member<float>("x")
 		.member<float>("y")
 		.member<float>("z")
-		.member<float>("w");
+		.member<float>("w")
+		.member<bool>("ever_bounced");
 
 	m_World.component<Bounciness>()
 		.member<float>("value");
@@ -74,8 +75,10 @@ void GameFramework::RegisterComponentsReflection()
 	m_World.component<JumpSpeed>()
 		.member<float>("value");
 
-	m_World.component<Lifetime>()
-		.member<float>("value");
+	m_World.component<AfterbounceLifetime>()
+		.member<bool>("enabled")
+		.member<float>("current")
+		.member<float>("maximum");
 
 	m_World.component<ShotCooldown>()
 		.member<float>("current")
@@ -90,9 +93,7 @@ void GameFramework::RegisterComponentsReflection()
 		.member<float>("maximum");
 
 	m_World.component<ShootVelocity>()
-		.member<float>("x")
-		.member<float>("y")
-		.member<float>("z");
+		.member<float>("value");
 }
 
 void GameFramework::RegisterSystems()

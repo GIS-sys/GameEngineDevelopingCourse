@@ -56,6 +56,8 @@ local function BounceSystem(it)
 			vel.x = vel.x - (1.0 + bounciness.value) * plane.x * dotVel
 			vel.y = vel.y - (1.0 + bounciness.value) * plane.y * dotVel
 			vel.z = vel.z - (1.0 + bounciness.value) * plane.z * dotVel
+
+			plane.ever_bounced = true
 		end
     end
 end

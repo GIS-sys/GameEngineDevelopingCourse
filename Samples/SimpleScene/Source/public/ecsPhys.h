@@ -31,6 +31,7 @@ struct BouncePlane
 	float y;
 	float z;
 	float w;
+	bool ever_bounced = false;
 };
 
 struct Bounciness
@@ -54,8 +55,10 @@ struct Speed
 };
 
 
-struct Lifetime {
-	float value;
+struct AfterbounceLifetime {
+	float current;
+	float maximum;
+	bool enabled;
 };
 
 
@@ -75,7 +78,5 @@ struct Magazine {
 };
 
 struct ShootVelocity {
-	float x;
-	float y;
-	float z;
+	float value;
 };

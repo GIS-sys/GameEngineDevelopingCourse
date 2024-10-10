@@ -18,6 +18,7 @@ namespace GameEngine::Render
 	class RENDER_ENGINE_API RenderObject final
 	{
 	public:
+		bool is_destroyed = false;
 		RenderObject() = default;
 		~RenderObject();
 

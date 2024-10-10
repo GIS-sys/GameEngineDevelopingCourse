@@ -61,9 +61,11 @@ void destroy_rendered_object(flecs::entity& e, RenderObjectPtr& render_object, c
 	//render_object.ptr->~RenderObject();
 	//render_thread->ptr->EnqueueCommand(Render::ERC::DeleteRenderObject)
 	e.remove<RenderObjectPtr>();
+	render_object.ptr->is_destroyed = true;
+	/*e.remove<RenderObjectPtr>();
 	e.disable();
 	e.destruct();
-	e.clear();
+	e.clear();*/
 }
 
 void RegisterEcsControlSystems(flecs::world& world)

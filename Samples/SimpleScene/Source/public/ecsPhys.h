@@ -9,6 +9,11 @@
 #define ECS_META_IMPL EXTERN // Ensure meta symbols are only defined once
 #endif
 
+ECS_STRUCT(InitComp,
+{
+	bool init;
+});
+
 ECS_STRUCT(Position,
 {
 	float x;

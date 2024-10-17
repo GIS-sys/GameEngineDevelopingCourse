@@ -32,12 +32,15 @@ local function collision(it)
           if distance_squared < total_size_squared then
             col[i].collided = true
             col[j].collided = true
-            vels[i].x = -vels[i].x
-            vels[i].y = -vels[i].y
-            vels[i].z = -vels[i].z
-            vels[j].x = -vels[j].x
-            vels[j].y = -vels[j].y
-            vels[j].z = -vels[j].z
+            tmpx = vels[i].x
+            tmpy = vels[i].y
+            tmpz = vels[i].z
+            vels[i].x = vels[j].x
+            vels[i].y = vels[j].y
+            vels[i].z = vels[j].z
+            vels[j].x = tmpx
+            vels[j].y = tmpy
+            vels[j].z = tmpz
           end
         end
       end
@@ -60,7 +63,7 @@ local function non_bullet_collision(it)
   for col, vel, ent in ecs.each(it) do
     if col.collided then
       --vel.x = vel.x + 0.1;
-      vel.y = vel.y + 1.0;
+      vel.y = vel.y - 1.0;
       --vel.z = vel.z + 0.1;
     end
   end

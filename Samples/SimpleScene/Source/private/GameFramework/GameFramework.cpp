@@ -29,7 +29,7 @@ void GameFramework::Init()
 		.set(Gravity{ 0.f, -9.8065f, 0.f })
 		.set(BouncePlane{ 0.f, 1.f, 0.f, 5.f })
 		.set(Bounciness{ 0.3f })
-		.set(Collider{ 0.05, false })
+		.set(Collider{ 10.5, false })
 		.set(EntitySystem::ECS::GeometryPtr{ RenderCore::DefaultGeometry::Cube() })
 		.set(EntitySystem::ECS::RenderObjectPtr{ new Render::RenderObject() })
 		.set(ControllerPtr{ new Core::Controller(Core::g_FileSystem->GetConfigPath("Input_default.ini")) });
@@ -41,7 +41,7 @@ void GameFramework::Init()
 		.set(BouncePlane{ 0.f, 1.f, 0.f, 5.f })
 		.set(Bounciness{ 1.f })
 		.set(DestructionTimer{1.0, 1.0, false})
-		.set(Collider{ 0.05, false })
+		.set(Collider{ 10.5, false })
 		.set(EntitySystem::ECS::GeometryPtr{ RenderCore::DefaultGeometry::Cube() })
 		.set(EntitySystem::ECS::RenderObjectPtr{ new Render::RenderObject() });
 
@@ -49,6 +49,7 @@ void GameFramework::Init()
 		.set(Position{ 0.0f, 12.0f, -10.0f })
 		.set(Speed{ 10.f })
 		.set(CameraPtr{ Core::g_MainCamera })
+		.set(Gun{ 5, 5, 1.0, 3.0, 0.0, 7.0 })
 		.set(ControllerPtr{ new Core::Controller(Core::g_FileSystem->GetConfigPath("Input_default.ini")) });
 }
 
@@ -65,6 +66,7 @@ void GameFramework::RegisterComponents()
 	ECS_META_COMPONENT(m_World, Speed);
 	ECS_META_COMPONENT(m_World, DestructionTimer);
 	ECS_META_COMPONENT(m_World, Collider);
+	ECS_META_COMPONENT(m_World, Gun);
 }
 
 void GameFramework::RegisterSystems()

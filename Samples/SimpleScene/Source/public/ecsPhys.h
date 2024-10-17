@@ -70,3 +70,13 @@ ECS_STRUCT(Collider,
 	float size;
 	bool collided;
 });
+
+ECS_STRUCT(Gun,
+{
+	int current_bullets;
+	int max_bullets;
+	float shot_cd;
+	float reload_cd;
+	float current_cd;
+	float shoot_velovity;
+});

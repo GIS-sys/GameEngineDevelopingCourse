@@ -21,6 +21,7 @@ namespace GameEngine
 			~ScriptManager();
 
 		public:
+			void AddAllScripts();
 			void AddScript(const std::string& scriptPath);
 			void Update(float dt);
 			void ReloadScripts();

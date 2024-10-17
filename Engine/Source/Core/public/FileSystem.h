@@ -29,6 +29,8 @@ namespace GameEngine
 			inline Path GetConfigPath(const std::string& path) const;
 			inline Path GetScriptsPath(const std::string& path) const;
 
+			static std::vector<Path> FindAllFilesIn(const Path& path);
+
 		private:
 			Path m_root;
 			Path m_shadersRoot;

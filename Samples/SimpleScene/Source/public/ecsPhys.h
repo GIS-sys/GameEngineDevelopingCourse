@@ -58,3 +58,15 @@ ECS_STRUCT(Speed,
 	float value;
 });
 
+ECS_STRUCT(DestructionTimer,
+{
+	float rest_time;
+	float start_time;
+	bool enabled;
+});
+
+ECS_STRUCT(Collider,
+{
+	float size;
+	bool collided;
+});

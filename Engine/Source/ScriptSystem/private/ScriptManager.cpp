@@ -20,7 +20,7 @@ namespace GameEngine::ScriptSystem
 
 		luaL_openlibs(L);
 
-		AddScript("Physics.lua");
+		AddAllScripts();
 	}
 
 	ScriptManager::~ScriptManager()
@@ -29,6 +29,13 @@ namespace GameEngine::ScriptSystem
 		{
 			delete script;
 		}
+	}
+
+	void ScriptManager::AddAllScripts() {
+		for (const Core::FileSystem::Path& scriptPath : Core::FileSystem::FindAllFilesIn(Core::g_FileSystem->GetScriptsPath(""))) {
+			AddScript(scriptPath.string());
+		}
+		
 	}
 
 	void ScriptManager::AddScript(const std::string& scriptPath)

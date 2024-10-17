@@ -38,4 +38,18 @@ namespace GameEngine::Core
 	{
 		return FileSystem::Ptr(new FileSystem(root), Deleter());
 	}
+
+	std::vector<FileSystem::Path> FileSystem::FindAllFilesIn(const Path& path) {
+		std::vector<Path> filenames;
+		for (const auto& entry : std::filesystem::directory_iterator(path))
+		{
+			if (std::filesystem::is_regular_file(entry))
+			{
+				Path next_full_path = entry.path();
+				Path next_filename = next_full_path.filename();
+				filenames.push_back(next_filename);
+			}
+		}
+		return filenames;
+	}
 }

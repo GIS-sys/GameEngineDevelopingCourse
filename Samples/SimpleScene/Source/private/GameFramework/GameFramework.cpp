@@ -29,6 +29,7 @@ void GameFramework::Init()
 		.set(Gravity{ 0.f, -9.8065f, 0.f })
 		.set(BouncePlane{ 0.f, 1.f, 0.f, 5.f })
 		.set(Bounciness{ 0.3f })
+		.set(Collider{ 0.05, false })
 		.set(EntitySystem::ECS::GeometryPtr{ RenderCore::DefaultGeometry::Cube() })
 		.set(EntitySystem::ECS::RenderObjectPtr{ new Render::RenderObject() })
 		.set(ControllerPtr{ new Core::Controller(Core::g_FileSystem->GetConfigPath("Input_default.ini")) });
@@ -39,6 +40,8 @@ void GameFramework::Init()
 		.set(Gravity{ 0.f, -9.8065f, 0.f })
 		.set(BouncePlane{ 0.f, 1.f, 0.f, 5.f })
 		.set(Bounciness{ 1.f })
+		.set(DestructionTimer{1.0, 1.0, false})
+		.set(Collider{ 0.05, false })
 		.set(EntitySystem::ECS::GeometryPtr{ RenderCore::DefaultGeometry::Cube() })
 		.set(EntitySystem::ECS::RenderObjectPtr{ new Render::RenderObject() });
 
@@ -60,6 +63,8 @@ void GameFramework::RegisterComponents()
 	ECS_META_COMPONENT(m_World, ShiverAmount);
 	ECS_META_COMPONENT(m_World, FrictionAmount);
 	ECS_META_COMPONENT(m_World, Speed);
+	ECS_META_COMPONENT(m_World, DestructionTimer);
+	ECS_META_COMPONENT(m_World, Collider);
 }
 
 void GameFramework::RegisterSystems()

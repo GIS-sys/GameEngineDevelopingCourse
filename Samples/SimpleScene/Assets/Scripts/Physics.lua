@@ -22,7 +22,7 @@ local function gravity(it)
 		end
 		
 		vel.x = vel.x + grav.x * it.delta_time
-        vel.y = vel.y + grav.y * it.delta_time
+		vel.y = vel.y + grav.y * it.delta_time
 		vel.z = vel.z + grav.z * it.delta_time
     end
 end

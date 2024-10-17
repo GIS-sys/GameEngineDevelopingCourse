@@ -9,6 +9,11 @@
 #define ECS_META_IMPL EXTERN // Ensure meta symbols are only defined once
 #endif
 
+ECS_STRUCT(InitComp,
+{
+	bool init;
+});
+
 ECS_STRUCT(Position,
 {
 	float x;
@@ -58,3 +63,25 @@ ECS_STRUCT(Speed,
 	float value;
 });
 
+ECS_STRUCT(DestructionTimer,
+{
+	float rest_time;
+	float start_time;
+	bool enabled;
+});
+
+ECS_STRUCT(Collider,
+{
+	float size;
+	bool collided;
+});
+
+ECS_STRUCT(Gun,
+{
+	int current_bullets;
+	int max_bullets;
+	float shot_cd;
+	float reload_cd;
+	float current_cd;
+	float shoot_velovity;
+});
